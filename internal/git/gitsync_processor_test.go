@@ -135,6 +135,12 @@ func TestMain(m *testing.M) {
 	if err := pool.Retry(func() error {
 		// Implement checks for both the Apache server and SSH service here
 
+		// Check SSH service availability
+		_, err = net.Dial("tcp", "localhost:2222") // Adjust port if necessary
+		if err != nil {
+			return fmt.Errorf("SSH service not yet ready")
+		}
+
 		// Check Apache server availability
 		client := &http.Client{}
 		req, err := http.NewRequest("GET", "http://localhost:8080", nil)
@@ -152,12 +158,6 @@ func TestMain(m *testing.M) {
 				log.Println(err)
 			}
 		}(resp.Body)
-
-		// Check SSH service availability
-		_, err = net.Dial("tcp", "localhost:2222") // Adjust port if necessary
-		if err != nil {
-			return fmt.Errorf("SSH service not yet ready")
-		}
 
 		// If both checks pass, return nil to indicate success
 		return nil
