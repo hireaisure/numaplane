@@ -38,9 +38,10 @@ import (
 	"k8s.io/client-go/kubernetes/scheme"
 	k8sClient "sigs.k8s.io/controller-runtime/pkg/client"
 
+	mocksClient "github.com/numaproj-labs/numaplane/internal/kubernetes/mocks"
+
 	"github.com/numaproj-labs/numaplane/api/v1alpha1"
 	controllerconfig "github.com/numaproj-labs/numaplane/internal/controller/config"
-	mocksClient "github.com/numaproj-labs/numaplane/internal/kubernetes/mocks"
 	gitshared "github.com/numaproj-labs/numaplane/internal/shared/git"
 )
 
@@ -130,7 +131,7 @@ func TestMain(m *testing.M) {
 		log.Fatalf("Could not start the Docker resource: %s", err)
 	}
 
-	// Wait for the local Git server to be ready
+	// Wait for the local Git server to be readys
 	if err := pool.Retry(func() error {
 		// Implement checks for both the Apache server and SSH service here
 
